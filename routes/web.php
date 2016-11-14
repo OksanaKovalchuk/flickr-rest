@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 Route::get('index','PhotoController@index');
 Route::get('photo/{id}','PhotoController@photo');
-Route::get('photo/{id}/size/{size}','PhotoController@getBySize');
+Route::get('photo/{id}/size/{size}/{index}','PhotoController@getBySize');
 
 
 
