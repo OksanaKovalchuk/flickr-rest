@@ -25,3 +25,40 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+
+
+
+
+
+
+
+#Flickr n-ix test task
+
+## Getting Started
+
+To get you started you can simply clone repository and install the dependencies:
+
+
+### Clone project
+
+Clone  repository using [git]:
+
+```
+git clone https://github.com/OksanaKovalchuk/flickr-rest.git
+cd flickr-rest
+```
+
+
+
+### Run the Application
+
+The simplest way to start
+this server is:
+
+```
+php artisan serve
+```
+
+Server started at `http://localhost:8000/`.
+
+.
