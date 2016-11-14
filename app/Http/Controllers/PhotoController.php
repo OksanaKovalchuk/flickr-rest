@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 class PhotoController  extends Controller
 {
+    /**
+     * function to get info for main route
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         try {
@@ -35,6 +39,11 @@ class PhotoController  extends Controller
         ]);
     }
 
+    /**
+     * function for route with picture and it's available sizes
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function photo($id){
         try {
             $apiKey = 'cd51c35deb0b194c8c3ccbf6e18954c5';
@@ -59,6 +68,14 @@ class PhotoController  extends Controller
             'sizes' => $result
         ]);
     }
+
+    /**
+     * function for getting image due to choosed  size
+     * @param $id
+     * @param $size
+     * @param $index
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function  getBySize($id,$size, $index){
 
         try {
