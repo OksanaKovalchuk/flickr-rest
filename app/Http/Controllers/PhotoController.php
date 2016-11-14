@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-
+use Illuminate\Foundation\Validation\ValidatesRequests;
 class PhotoController  extends Controller
 {
     public function index()
@@ -36,13 +35,12 @@ class PhotoController  extends Controller
         ]);
     }
 
-    public function photo(Request $request){
+    public function photo($id){
         try {
             $apiKey = 'cd51c35deb0b194c8c3ccbf6e18954c5';
             $method = 'flickr.photos.getSizes';
-            $id = explode('/', $request->decodedPath());
             $url = "https://api.flickr.com/services/rest/?method=".
-                $method."&photo_id=".$id[1]."&format=json&nojsoncallback=1&api_key=".$apiKey;
+                $method."&photo_id=".$id."&format=json&nojsoncallback=1&api_key=".$apiKey;
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -61,19 +59,19 @@ class PhotoController  extends Controller
             'sizes' => $result
         ]);
     }
-    public function  getBySize(Request $request){
+    public function  getBySize($id,$size, $index){
+
         try {
             $apiKey = 'cd51c35deb0b194c8c3ccbf6e18954c5';
             $method = 'flickr.photos.getSizes';
-            $id = explode('/', $request->decodedPath());
             $url = "https://api.flickr.com/services/rest/?method=".
-                $method."&photo_id=".$id[1]."&format=json&nojsoncallback=1&api_key=".$apiKey;
+                $method."&photo_id=".$id."&format=json&nojsoncallback=1&api_key=".$apiKey;
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $result = (curl_exec($ch));
             $mid = json_decode($result, true);
-            $link = $mid["sizes"]["size"][$id[4]]["source"];
+            $link = $mid["sizes"]["size"][$index]["source"];
             curl_close($ch);
 
         } catch (\Exception $e) {
