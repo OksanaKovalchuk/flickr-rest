@@ -14,9 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
-
 Route::get('index','PhotoController@index');
 Route::get('photo/{id}','PhotoController@photo');
 Route::get('photo/{id}/size/{size}','PhotoController@getBySize');
+
 
 

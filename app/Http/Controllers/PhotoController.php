@@ -1,13 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 
 class PhotoController  extends Controller
 {
-    public function __construct(){}
 
     public function index()
     {
@@ -19,11 +18,11 @@ class PhotoController  extends Controller
             $new = curl_init();
             curl_setopt($new, CURLOPT_URL, $url);
             curl_setopt($new, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($new,CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+//            curl_setopt($new, CURLOPT_HEADER, true);
+//            curl_setopt($new,CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
 
-            $result =(curl_exec($new));
-            $a = $this->namespacedXMLToArray($result);
-            Log::info($a);
+            $result =$this->namespacedXMLToArray(curl_exec($new));
+//            dd($result);
             curl_close($new);
 
         } catch (\Exception $e) {
@@ -34,14 +33,13 @@ class PhotoController  extends Controller
         }
 
         return response()->json([
-            'photos' => $a
+            'photos' => $result
         ]);
     }
     public function photo(Request $request){
-          }
+    }
     public function  getBySize(){
     }
-
     function namespacedXMLToArray($xml)
     {
         function removeNamespaceFromXML( $xml )
