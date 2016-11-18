@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 
 class PhotoController  extends Controller
 {
+
     /**
      * function to get info for main route
      * @return \Illuminate\Http\JsonResponse
@@ -15,17 +16,13 @@ class PhotoController  extends Controller
     public function index()
     {
         try {
-            $apiKey = 'cd51c35deb0b194c8c3ccbf6e18954c5';
-
-            $method = 'flickr.photos.getRecent';
-            $url = "https://api.flickr.com/services/rest/?method=".$method."&nojsoncallback=1&format=json&api_key=".$apiKey;
+            $method = "flickr.photos.getRecent";
+            $url = "https://api.flickr.com/services/rest/?method=" . $method .
+                "&nojsoncallback=1&format=json&api_key=" . env('API_KEY');
 
             $new = curl_init();
             curl_setopt($new, CURLOPT_URL, $url);
             curl_setopt($new, CURLOPT_RETURNTRANSFER, 1);
-
-            curl_setopt($new,CURLOPT_HTTPHEADER, array('method: flickr.photos.getRecent',
-                'format'=>'json','nojsoncallback'=>'1','apiKey:cd51c35deb0b194c8c3ccbf6e18954c5'));
             $result = (curl_exec($new));
             curl_setopt($new, CURLOPT_HEADER, true);
             curl_close($new);
@@ -49,11 +46,11 @@ class PhotoController  extends Controller
      */
     public function photo($id){
 
-        $v = Validator::make(['id'=>$id],[
+        $valid = Validator::make(['id'=>$id],[
            'id'=>'required|min:6'
         ]);
 
-        if($v->fails()){
+        if($valid->fails()){
             return response()->json([
                 'status'=> 400,
                 'text' => 'Please, check data you\'ve entered'
@@ -61,10 +58,9 @@ class PhotoController  extends Controller
         };
 
         try {
-            $apiKey = 'cd51c35deb0b194c8c3ccbf6e18954c5';
             $method = 'flickr.photos.getSizes';
-            $url = "https://api.flickr.com/services/rest/?method=".
-                $method."&photo_id=".$id."&format=json&nojsoncallback=1&api_key=".$apiKey;
+            $url = "https://api.flickr.com/services/rest/?method=" .
+                $method. "&photo_id=" . $id . "&format=json&nojsoncallback=1&api_key=" . env('API_KEY');
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -93,7 +89,7 @@ class PhotoController  extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function  getBySize($id,$size, $index){
-        $v = Validator::make([
+        $valid = Validator::make([
             'id' => $id,
             'index' => $index
         ],[
@@ -101,7 +97,7 @@ class PhotoController  extends Controller
             'index' => 'required|integer'
         ]);
 
-        if($v->fails()){
+        if($valid->fails()){
             return response()->json([
                 'status'=> 400,
                 'text' => 'Please, check the data you\'ve entered'
@@ -109,10 +105,10 @@ class PhotoController  extends Controller
         };
 
         try {
-            $apiKey = 'cd51c35deb0b194c8c3ccbf6e18954c5';
+
             $method = 'flickr.photos.getSizes';
-            $url = "https://api.flickr.com/services/rest/?method=".
-                $method."&photo_id=".$id."&format=json&nojsoncallback=1&api_key=".$apiKey;
+            $url = "https://api.flickr.com/services/rest/?method=" .
+                $method. "&photo_id=" . $id . "&format=json&nojsoncallback=1&api_key=" . env('API_KEY');
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
