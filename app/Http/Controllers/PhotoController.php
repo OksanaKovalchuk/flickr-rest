@@ -16,6 +16,7 @@ class PhotoController extends Controller
     public function index()
     {
         $flickr = new FlickrEntity();
+
         try {
             $result = $flickr->getRecent();
 
@@ -38,11 +39,9 @@ class PhotoController extends Controller
      */
     public function photo($id)
     {
-
-        $valid = Validator::make(
-            [
-                'id' => $id
-            ], [
+        $valid = Validator::make([
+            'id' => $id
+        ], [
             'id' => 'required|min:6'
         ]);
 
@@ -97,7 +96,7 @@ class PhotoController extends Controller
 
         try {
             $result = $flickr->getSizes($id);
-            $mid = json_decode($result, true);
+            $mid = json_decode($result, TRUE);
             $link = $mid["sizes"]["size"][$index]["source"];
         } catch (\Exception $e) {
             return response()->json([

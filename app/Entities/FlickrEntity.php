@@ -19,7 +19,7 @@ class FlickrEntity
     }
 
     /**
-     * @param $str
+     * @param $params
      * @return string
      */
     public function generateUrl($params)
@@ -66,15 +66,15 @@ class FlickrEntity
     }
 
     /**
-     * @param $photo_id
+     * @param $photoId
      * @return mixed
      */
-    public function getSizes($photo_id)
+    public function getSizes($photoId)
     {
         $method = "flickr.photos.getSizes";
         $response = $this->sendRequestToFlickr($this->generateUrl([
             'method' => $method,
-            'photo_id' => $photo_id
+            'photo_id' => $photoId
         ]));
         return $response;
     }
