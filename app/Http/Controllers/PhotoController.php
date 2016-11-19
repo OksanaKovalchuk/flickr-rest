@@ -4,28 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Entities\FlickrEntity;
 use Illuminate\Support\Facades\Validator;
 
 class PhotoController extends Controller
 {
-
     /**
      * function to get info for main route
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
+        $flickr = new FlickrEntity();
         try {
-            $method = "flickr.photos.getRecent";
-            $url = "https://api.flickr.com/services/rest/?method=" . $method .
-                "&nojsoncallback=1&format=json&api_key=" . env('API_KEY');
-
-            $new = curl_init();
-            curl_setopt($new, CURLOPT_URL, $url);
-            curl_setopt($new, CURLOPT_RETURNTRANSFER, 1);
-            $result = (curl_exec($new));
-            curl_setopt($new, CURLOPT_HEADER, true);
-            curl_close($new);
+            $result = $flickr->getRecent();
 
         } catch (\Exception $e) {
             return response()->json([
@@ -60,17 +52,9 @@ class PhotoController extends Controller
                 'text' => 'Please, check data you\'ve entered'
             ]);
         };
-
+        $flickr = new FlickrEntity();
         try {
-            $method = 'flickr.photos.getSizes';
-            $url = "https://api.flickr.com/services/rest/?method=" .
-                $method . "&photo_id=" . $id . "&format=json&nojsoncallback=1&api_key=" . env('API_KEY');
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $result = (curl_exec($ch));
-            curl_close($ch);
+            $result = $flickr->getSizes($id);
 
         } catch (\Exception $e) {
             return response()->json([
@@ -109,18 +93,12 @@ class PhotoController extends Controller
             ]);
         };
 
+        $flickr = new FlickrEntity();
+
         try {
-            $method = 'flickr.photos.getSizes';
-            $url = "https://api.flickr.com/services/rest/?method=" .
-                $method . "&photo_id=" . $id . "&format=json&nojsoncallback=1&api_key=" . env('API_KEY');
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $result = (curl_exec($ch));
+            $result = $flickr->getSizes($id);
             $mid = json_decode($result, true);
             $link = $mid["sizes"]["size"][$index]["source"];
-            curl_close($ch);
-
         } catch (\Exception $e) {
             return response()->json([
                 'status' => $e->getCode(),
