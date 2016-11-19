@@ -8,7 +8,7 @@ class FlickrEntity
 {
     private $baseUrl = 'https://api.flickr.com/services/rest/';
 
-    protected $apiKey;
+    private $apiKey;
 
     /**
      * FlickrEntity constructor.
@@ -22,19 +22,17 @@ class FlickrEntity
      * @param $str
      * @return string
      */
-    public function generateUti($str)
+    public function generateUrl($params)
     {
         $url = "{$this->baseUrl}?";
 
-        $str = array_merge($str,[
-            'nojsoncallback' => '1',
-            'format' => 'json'
-        ]);
-        foreach ($str as $key => $value) {
+
+        foreach ($params as $key => $value) {
             $urlParts[] = "{$key}={$value}";
         }
-
-        $urlParts[] = "api_key=".$this->apiKey;
+        $urlParts[] = 'nojsoncallback=1';
+        $urlParts[] = 'format=json';
+        $urlParts[] = "api_key=" . $this->apiKey;
         return $url . implode('&', $urlParts);
     }
 
@@ -61,7 +59,7 @@ class FlickrEntity
     public function getRecent()
     {
         $method = "flickr.photos.getRecent";
-        $response = $this->sendRequestToFlickr($this->generateUti([
+        $response = $this->sendRequestToFlickr($this->generateUrl([
             'method' => $method
         ]));
         return $response;
@@ -74,7 +72,7 @@ class FlickrEntity
     public function getSizes($photo_id)
     {
         $method = "flickr.photos.getSizes";
-        $response = $this->sendRequestToFlickr($this->generateUti([
+        $response = $this->sendRequestToFlickr($this->generateUrl([
             'method' => $method,
             'photo_id' => $photo_id
         ]));
