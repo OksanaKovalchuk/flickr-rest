@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
-class PhotoController  extends Controller
+class PhotoController extends Controller
 {
 
     /**
@@ -44,15 +44,19 @@ class PhotoController  extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function photo($id){
+    public function photo($id)
+    {
 
-        $valid = Validator::make(['id'=>$id],[
-           'id'=>'required|min:6'
+        $valid = Validator::make(
+            [
+                'id' => $id
+            ], [
+            'id' => 'required|min:6'
         ]);
 
-        if($valid->fails()){
+        if ($valid->fails()) {
             return response()->json([
-                'status'=> 400,
+                'status' => 400,
                 'text' => 'Please, check data you\'ve entered'
             ]);
         };
@@ -60,7 +64,7 @@ class PhotoController  extends Controller
         try {
             $method = 'flickr.photos.getSizes';
             $url = "https://api.flickr.com/services/rest/?method=" .
-                $method. "&photo_id=" . $id . "&format=json&nojsoncallback=1&api_key=" . env('API_KEY');
+                $method . "&photo_id=" . $id . "&format=json&nojsoncallback=1&api_key=" . env('API_KEY');
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -88,27 +92,27 @@ class PhotoController  extends Controller
      * @param $index
      * @return \Illuminate\Http\JsonResponse
      */
-    public function  getBySize($id,$size, $index){
+    public function getBySize($id, $size, $index)
+    {
         $valid = Validator::make([
             'id' => $id,
             'index' => $index
-        ],[
+        ], [
             'id' => 'required|min:6',
             'index' => 'required|integer'
         ]);
 
-        if($valid->fails()){
+        if ($valid->fails()) {
             return response()->json([
-                'status'=> 400,
+                'status' => 400,
                 'text' => 'Please, check the data you\'ve entered'
             ]);
         };
 
         try {
-
             $method = 'flickr.photos.getSizes';
             $url = "https://api.flickr.com/services/rest/?method=" .
-                $method. "&photo_id=" . $id . "&format=json&nojsoncallback=1&api_key=" . env('API_KEY');
+                $method . "&photo_id=" . $id . "&format=json&nojsoncallback=1&api_key=" . env('API_KEY');
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
